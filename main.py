@@ -18,7 +18,7 @@ def xor(use_hf=True):
     # net
     shape = [2, 5, 1]
     ff = hf.FFNet(shape,
-                  layers=hf.nl.Logistic(),
+                  layers=hf.nl.Logistic(), # Logistic sigmoid function
                   conns = None, # default is to connect in series
                   loss_type=hf.loss_funcs.SquaredError(),
                   W_init_params=None,
