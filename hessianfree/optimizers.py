@@ -55,16 +55,17 @@ class HessianFree(Optimizer):
         """
         err = self.net.error()  # note: don't reuse previous error (diff batch)
 
-        # compute gradient
+        # compute gradient #####################################################
         grad = self.net.calc_grad()
 
         if printing:
             print("initial err", err)
             print("grad norm", np.linalg.norm(grad))
 
-        # run CG
+        # run CG ###############################################################
         if self.init_delta is None:
             self.init_delta = np.zeros_like(self.net.W)
+
         deltas = self.conjugate_gradient(self.init_delta * 0.95, grad,
                                          iters=self.CG_iter,
                                          printing=printing and self.net.debug)
@@ -74,7 +75,7 @@ class HessianFree(Optimizer):
 
         self.init_delta = deltas[-1][1]  # note: don't backtrack this
 
-        # CG backtracking
+        # CG backtracking ######################################################
         new_err = np.inf
         for j in range(len(deltas) - 1, -1, -1):
             prev_err = self.net.error(self.net.W + deltas[j][1])
@@ -94,7 +95,8 @@ class HessianFree(Optimizer):
             print("using iteration", deltas[j + 1][0])
             print("backtracked err", new_err)
 
-        # update damping parameter (compare improvement predicted by
+        # update damping parameter #############################################
+        # (compare improvement predicted by
         # quadratic model to the actual improvement in the error)
         quad = (0.5 * np.dot(self.calc_G(delta, damping=self.damping),
                              delta) +
@@ -110,7 +112,7 @@ class HessianFree(Optimizer):
             print("improvement_ratio", improvement_ratio)
             print("damping", self.damping)
 
-        # line search to find learning rate
+        # line search to find learning rate ####################################
         l_rate = 1.0
         min_improv = min(1e-2 * np.dot(grad, delta), 0)
         for _ in range(60):
@@ -132,6 +134,7 @@ class HessianFree(Optimizer):
             print("l_rate err", new_err)
             print("improvement", new_err - err)
 
+        # closure ##############################################################
         if self.plotting:
             self.plots["training error (log)"] += [new_err]
             self.plots["learning rate"] += [l_rate]
