@@ -73,7 +73,9 @@ class HessianFree(Optimizer):
         if printing:
             print("CG steps", deltas[-1][0])
 
-        self.init_delta = deltas[-1][1]  # note: don't backtrack this
+        # don't backtrack this #################################################
+        # refer to sec 4.6
+        self.init_delta = deltas[-1][1]
 
         # CG backtracking ######################################################
         new_err = np.inf
@@ -96,8 +98,9 @@ class HessianFree(Optimizer):
             print("backtracked err", new_err)
 
         # update damping parameter #############################################
-        # (compare improvement predicted by
-        # quadratic model to the actual improvement in the error)
+        # refer to sec 4.1
+        # (compare improvement predicted by quadratic model to the actual improvement in the error)
+        # improvement_ratio: \rho
         quad = (0.5 * np.dot(self.calc_G(delta, damping=self.damping),
                              delta) +
                 np.dot(grad, delta))
@@ -234,12 +237,14 @@ class HessianFree(Optimizer):
 
             res_norm = new_res_norm
 
-            # store deltas for backtracking
+            # store deltas for backtracking ####################################
+            # refer to sec 4.6
             if i == store_iter:
                 deltas += [(i, get(delta))]
                 store_iter = int(store_iter * store_mult)
 
-            # martens termination conditions
+            # termination conditions ###########################################
+            # refer to sec 4.4
             vals[i] = -0.5 * dot(residual + base_grad, delta)
 
             gap = max(int(0.1 * i), 10)
@@ -251,10 +256,9 @@ class HessianFree(Optimizer):
                     (vals[i] - vals[i - gap]) / vals[i] < 5e-6 * gap):
                 break
 
+        # closure ##############################################################
         deltas += [(i, get(delta))]
-
         return deltas
-
 
 class SGD(Optimizer):
     """Compute weight update using first-order gradient descent.
