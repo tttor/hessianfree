@@ -50,8 +50,10 @@ class HessianFree(Optimizer):
 
     def compute_update(self, printing=False):
         """Compute a weight update for the current batch.
-
         :param bool printing: if True, print out data about the optimization
+
+        calc_G(.): Compute Gauss-Newton matrix-vector product, sec 4.2,
+                   defined at hessianfree/hessianfree/ffnet.py
         """
         err = self.net.error()  # note: don't reuse previous error (diff batch)
 
