@@ -75,8 +75,7 @@ class HessianFree(Optimizer):
         if printing:
             print("CG steps", deltas[-1][0])
 
-        # don't backtrack this #################################################
-        # refer to sec 4.6
+        # don't backtrack this; refer to sec 4.6
         self.init_delta = deltas[-1][1]
 
         # CG backtracking ######################################################
