@@ -10,7 +10,7 @@
 (3) update param
 
 # gauss-newton cg
-## @scipy
+## @scipy, merely newton-cg
 * https://docs.scipy.org/doc/scipy/reference/optimize.minimize-newtoncg.html
 * this is not trivial,
   we have to pass fn to the function, in nets this fn is the whole neural nets
@@ -27,11 +27,11 @@ where x is a (n,) ndarray, p is an arbitrary vector with dimension (n,) and args
 https://github.com/pytorch/pytorch/issues/1359
 https://github.com/tfrerix/proxprop
 
-
 ## 1st-order cg
 https://github.com/ikostrikov/pytorch-trpo/blob/master/conjugate_gradients.py
 
 https://github.com/torch/optim/blob/master/doc/algos.md#optim.cg
 https://github.com/torch/optim/blob/master/cg.lua
+http://www.gatsby.ucl.ac.uk/~edward/code/minimize/
 
 https://www.upwork.com/job/Implement-conjugate-gradient-optimization-algorithm-neural-network-framework_~01f058eabdf455ece6/
