@@ -7,6 +7,7 @@ def main():
     xor(use_hf=True)
 
 def xor(use_hf=True):
+    # Copied from: hessianfree/hessianfree/demos.py
     """Run a basic xor training test.
     :param bool use_hf: if True run example using Hessian-free optimization,
         otherwise use stochastic gradient descent
